@@ -103,30 +103,26 @@ def reducePossibles (letter, index):
 # negative number for index of letter in wrong place, so if there is a T in the word, but not in the third letter spot, ('t', -3)
 # use -100 or less for letters that aren't in word
 
-reducePossibles('a', -1)
-reducePossibles('d', -100)
-reducePossibles('i', -100)
-reducePossibles('e', -100)
-reducePossibles('u', -100)
-reducePossibles('n', -4)
-reducePossibles('g', -5)
-reducePossibles('r', -100)
-reducePossibles('w', -100)
-reducePossibles('o', -100)
-reducePossibles('a', -4)
-reducePossibles('n', 3)
-reducePossibles('a', 2)
-reducePossibles('y', 5)
-reducePossibles('g', 4)
-reducePossibles('m', -100)
+guessResults=[
+('a', -1),
+('d', -100),
+('i', -100),
+('e', -100),
+('u', -100),
+('r', -100),
+('o', -100),
+('a', -3),
+('s', -100),
+('t', -5),
+('l', -100),
+('a', 2),
+('t', -3),
+('c', -100),
+('h', -100),
+]
 
-
-
-
-
-
-
-
+for guess in guessResults:
+    reducePossibles(guess[0], guess[1])
 
 
 print('\nPossible Guesses: ')
