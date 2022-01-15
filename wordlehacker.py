@@ -108,14 +108,20 @@ reducePossibles('d', -100)
 reducePossibles('i', -100)
 reducePossibles('e', -100)
 reducePossibles('u', -100)
-reducePossibles('a', -3)
-reducePossibles('c', -100)
+reducePossibles('n', -4)
+reducePossibles('g', -5)
 reducePossibles('r', -100)
-reducePossibles('k', -100)
-reducePossibles('t', 1)
-reducePossibles('a', -4)
-reducePossibles('l', -100)
+reducePossibles('w', -100)
 reducePossibles('o', -100)
+reducePossibles('a', -4)
+reducePossibles('n', 3)
+reducePossibles('a', 2)
+reducePossibles('y', 5)
+reducePossibles('g', 4)
+reducePossibles('m', -100)
+
+
+
 
 
 
@@ -143,6 +149,7 @@ def letterFrequencyFunc (list, index):
     return(letterlist)
 
 letterWeights = {}
+
 for num in unknownLetters:
     freqList = letterFrequencyFunc(possibleWords, num)
     letterWeights.update({num: freqList})
@@ -169,4 +176,4 @@ wordsort=sorted(wordWeights, key=wordWeights.get, reverse=True)
 print('\n')
 print('Sorted List of Likely Words, most likely first: ')
 print(wordsort)
-
+print('\n\n')
