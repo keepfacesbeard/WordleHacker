@@ -67,41 +67,60 @@ def getLetterFrequencies():
 ####  DOING SOME GUESSING STUFF!  ####
 ####                              ####
 ######################################
-unknownLetters = [0, 1, 2, 3, 4]
+unknownLetters = [1, 2, 3, 4, 5]
 possibleWords = wordList
 
 def reducePossibles (letter, index):
     removeList=[]
-    if index >= 0:
+    if index > 0:
         unknownLetters.remove(index)
         for word in possibleWords:
 
-            if letter is word[index]:
+            if letter is word[index-1]:
                 continue
             else:
                 removeList.append(word)
 
-    elif index < 0:
+    elif index < 0 and index > -6:
+        index = abs(index)
         for word in possibleWords:
-            if letter is word[abs(index)]:
+            if letter is word[(index-1)]:
                 removeList.append(word)
             elif letter not in word:
                 removeList.append(word)
             else:
                 continue
+    elif index < -99:
+        for word in possibleWords:
+            if letter in word:
+                removeList.append(word)
          
 
     for word in removeList:
         possibleWords.remove(word)
         
     
-# negative number for index of letter in wrong place, so if there is a T in the word, but not in the fourth letter spot, ('t', -3), remember zero indexing
+# negative number for index of letter in wrong place, so if there is a T in the word, but not in the third letter spot, ('t', -3)
+# use -100 or less for letters that aren't in word
 
-reducePossibles('a', 0)
-reducePossibles('b', 1)
-# reducePossibles('t', -4)
-# reducePossibles('t', -2)
-# reducePossibles('n', -4)
+reducePossibles('a', -1)
+reducePossibles('d', -100)
+reducePossibles('i', -100)
+reducePossibles('e', -100)
+reducePossibles('u', -100)
+reducePossibles('a', -3)
+reducePossibles('c', -100)
+reducePossibles('r', -100)
+reducePossibles('k', -100)
+reducePossibles('t', 1)
+reducePossibles('a', -4)
+reducePossibles('l', -100)
+reducePossibles('o', -100)
+
+
+
+
+
 
 
 print('\nPossible Guesses: ')
@@ -109,17 +128,45 @@ print(possibleWords)
 print('\n')
 
 def letterFrequencyFunc (list, index):
+    index = index-1
     letters = []
     for word in list:
         letter = word[index]
         letters.append(letter)
     letterfrequency = Counter(letters)
+    istring = str(index)
     letterlist = []
     for item in sorted(letterfrequency.items(), key=lambda pair: pair[1], reverse=True):
         letterlist.append(item[0])
-    print('Highest probably for index ' + str(index) + ': ')
+    print('Highest probably for letter ' + str(index+1) + ': ')
     print(letterlist)
+    return(letterlist)
 
-for slot in unknownLetters:
-    print(letterFrequencyFunc(possibleWords, slot))
+letterWeights = {}
+for num in unknownLetters:
+    freqList = letterFrequencyFunc(possibleWords, num)
+    letterWeights.update({num: freqList})
+
+wordWeights={}
+for word in possibleWords:
+    wordWeight=0
+    for num in unknownLetters:
+        index = num-1
+        letterproblist = letterWeights[num]
+        # print('Letter ' + str(num) + ' probability list:')
+        # print(letterproblist)
+        for let in letterproblist:
+            if let in word:
+                if let is word[index] and letterproblist.index(let) is 0:
+                    wordWeight = wordWeight + 28
+                else:
+                    letval = 26-letterproblist.index(let)
+                    wordWeight = wordWeight + letval
+
+    wordWeights.update({word:wordWeight})
+
+wordsort=sorted(wordWeights, key=wordWeights.get, reverse=True)
+print('\n')
+print('Sorted List of Likely Words, most likely first: ')
+print(wordsort)
 
