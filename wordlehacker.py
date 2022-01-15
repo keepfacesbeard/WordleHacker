@@ -157,7 +157,7 @@ for word in possibleWords:
         # print(letterproblist)
         for let in letterproblist:
             if let in word:
-                if let is word[index] and letterproblist.index(let) is 0:
+                if let == word[index] and letterproblist.index(let) == 0:
                     wordWeight = wordWeight + 28
                 else:
                     letval = 26-letterproblist.index(let)
