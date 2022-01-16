@@ -104,21 +104,24 @@ def reducePossibles (letter, index):
 # use -100 or less for letters that aren't in word
 
 guessResults=[
-('a', -1),
+#guess one
+('s', 1),
+('a', -2),
+('n', -100),
 ('d', -100),
-('i', -100),
-('e', -100),
-('u', -100),
-('r', -100),
-('o', -100),
-('a', -3),
-('s', -100),
-('t', -5),
-('l', -100),
-('a', 2),
-('t', -3),
-('c', -100),
-('h', -100),
+('y', -100),
+# #guess two, based on likeliest word
+('p', -100),
+('t', -100),
+('a', 4),
+('l', 3),
+# ('l', -100),
+# #guess three, based on likeliest word
+# ('m', -100),
+# ('a', 2),
+# ('n', 3),
+# ('c', 5),
+
 ]
 
 for guess in guessResults:
