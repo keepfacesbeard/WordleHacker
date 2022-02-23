@@ -108,23 +108,23 @@ def reducePossibles (letter, index):
 
 guessResults=[
 #guess one
-('l', -100),
-('a', 2),
-('t', -100),
-('e', -4),
-('r', -100),
-# # # # # # #guess two, based on likeliest word
-('c', -100),
-# ('l', 2),
-('u', 3),
-('s', 4),
+# ('s', -100),
+# ('l', -100),
+('a', 3),
+# ('c', -100),
 ('e', 5),
+# # # # # # #guess two, based on likeliest word
+# ('a', -100),
+# ('w', -100),
+# ('r', 2),
+# ('r', -4),
+# ('k', -100),
 # # #guess three, based on likeliest word
+# ('b', -100),
+# ('d', -100),
+# ('n', -100),
 # ('f', -100),
-# ('o', -100),
-# ('l', 2),
-# ('a', 4),
-# ('t', 5),
+# ('z', -100),
 # ('o', 3),
 # ('l', 5),
 
@@ -179,6 +179,7 @@ for word in possibleWords:
 
 wordsort=sorted(wordWeights, key=wordWeights.get, reverse=True)
 print('\n')
-print('Sorted List of Likely Words, most likely first: ')
+possibleGuesses=str(len(wordsort))
+print('Sorted List of Likely Words, most likely first (' + possibleGuesses + ' possible words): ')
 print(wordsort)
 print('\n\n')
