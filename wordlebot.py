@@ -70,8 +70,7 @@ def getLetterFrequencies():
 ####  DOING SOME GUESSING STUFF!  ####
 ####                              ####
 ######################################
-unknownLetters = [1, 2, 3, 4, 5]
-possibleWords = wordList
+
 
 def reducePossibles (letter, index):
     removeList=[]
@@ -106,37 +105,9 @@ def reducePossibles (letter, index):
 # negative number for index of letter in wrong place, so if there is a T in the word, but not in the third letter spot, ('t', -3)
 # use -100 or less for letters that aren't in word
 
-guessResults=[
-#guess one
-('l', -100),
-('a', 2),
-('t', -3),
-('e', -4),
-('r', -100),
-# # # # # # # #guess two, based on likeliest word
-# ('i', -1),
-# ('r', -100),
-# ('a', -100),
-# ('t', -100),
-# ('e', -100),
-# # #guess three, based on likeliest word
-# ('i', -100),
-# ('n', -2),
-# ('g', -100),
-# ('n', -4),
-# ('n', 3),
-# ('o', -4),
-# ('t', -5),
-
-]
-
-for guess in guessResults:
-    reducePossibles(guess[0], guess[1])
 
 
-print('\nPossible Guesses: ')
-print(possibleWords)
-print('\n')
+
 
 def letterFrequencyFunc (list, index):
     index = index-1
@@ -153,44 +124,118 @@ def letterFrequencyFunc (list, index):
     print(letterlist)
     return(letterlist)
 
-letterWeights = {}
+# def weighLetters():
+#     letterWeights = {}
+#     for num in unknownLetters:
+#         freqList = letterFrequencyFunc(possibleWords, num)
+#         letterWeights.update({num: freqList})
+#     return letterWeights
 
-for num in unknownLetters:
-    freqList = letterFrequencyFunc(possibleWords, num)
-    letterWeights.update({num: freqList})
 
-wordWeights={}
-for word in possibleWords:
-    wordWeight=0
+def nextGuess():
+    for guess in guessResults:
+        reducePossibles(guess[0], guess[1])
+
+    letterWeights = {}
+
     for num in unknownLetters:
-        index = num-1
-        letterproblist = letterWeights[num]
-        # print('Letter ' + str(num) + ' probability list:')
-        # print(letterproblist)
-        for let in letterproblist:
-            if let in word:
-                if let == word[index] and letterproblist.index(let) == 0:
-                    wordWeight = wordWeight + 28
-                else:
-                    letval = 26-letterproblist.index(let)
-                    wordWeight = wordWeight + letval
+        freqList = letterFrequencyFunc(possibleWords, num)
+        letterWeights.update({num: freqList})
 
-    wordWeights.update({word:wordWeight})
+    wordWeights={}
+    for word in possibleWords:
+        wordWeight=0
+        for num in unknownLetters:
+            index = num-1
+            letterproblist = letterWeights[num]
+            # print('Letter ' + str(num) + ' probability list:')
+            # print(letterproblist)
+            for let in letterproblist:
+                if let in word:
+                    if let == word[index] and letterproblist.index(let) == 0:
+                        wordWeight = wordWeight + 28
+                    else:
+                        letval = 26-letterproblist.index(let)
+                        wordWeight = wordWeight + letval
 
-wordsort=sorted(wordWeights, key=wordWeights.get, reverse=True)
-print('\n')
-possibleGuesses=str(len(wordsort))
-print('Sorted list of likely words, most likely first (' + possibleGuesses + ' possible words): ')
-print(wordsort)
-print('\n\n')
+        wordWeights.update({word:wordWeight})
 
-# bestGuess=wordsort[0]
+    wordsort=sorted(wordWeights, key=wordWeights.get, reverse=True)
+    # print('\n')
+    possibleGuesses=str(len(wordsort))
+    print('Sorted list of likely words, most likely first (' + possibleGuesses + ' possible words): ')
+    print(wordsort)
+    print('\n\n')
+    bestGuess=wordsort[0]
+    return bestGuess
 
-# def checkGuess (guess, answer) :
-    #for each letter (guess[index]) if letter in guess = letter at index in answer:
+
+def checkGuess (guess, answer) :
+    # for each letter (guess[index]) if letter in guess = letter at index in answer:
+    for i in range(0,5):
+        if guess[i] == answer[i]:
+            guessResults.append((guess[i], i+1))
+        elif guess[i] in answer and guess [i] != answer[i]:
+            wrongSpot=(i+1)*-1
+            guessResults.append((guess[i], wrongSpot))
+        else:
+            guessResults.append((guess[i], -100))
+    
+
     # append (letter, index) to guessResults
     # if letter index not word index, for letter in answer check if guess[index] is in word
     # if in word, append tuple (letter, negative index) to guessResults
     # if not in word, append tuple (letter, -100) to guessResults
 
 
+unknownLetters = [1, 2, 3, 4, 5]
+possibleWords = wordList
+guessResults=[]
+
+
+def playWordle(answer):
+    guess1 = nextGuess()
+    if guess1 == answer:
+        print("Wow, first guess!")
+        return(answer, 1)
+    else:
+        print ("Guess 1: " + guess1)
+        checkGuess('alert', answer)
+        guess2 = nextGuess()
+        if guess2 == answer:
+            print("Solved! 2 Guesses: " + guess2)
+            return (answer, 2)
+        else:
+            print("Guess 2: " + guess2)
+            checkGuess(guess2, answer)
+            guess3 = nextGuess()
+            if guess3 == answer:
+                print("Solved! 3 Guesses: " + guess3)
+                return(answer,3)
+            else:
+                print("Guess 3: " + guess3)
+                checkGuess(guess3, answer)
+                guess4 = nextGuess()
+                if guess4 == answer:
+                    print("Solved! 4 Guesses: " + guess4)
+                    return(answer,4)
+                else:
+                    print("Guess 4: " + guess4)
+                    checkGuess(guess4, answer)
+                    guess5 = nextGuess()
+                    if guess5 == answer:
+                        print("Solved! 5 Guesses: " + guess5)
+                        return(answer,5)
+                    else:
+                        print("Guess 5: " + guess5)
+                        checkGuess(guess5, answer)
+                        guess6 = nextGuess()
+                        if guess6 == answer:
+                            print("Solved. 6 guesses: " + guess6)
+                            return(answer,6)
+                        else:
+                            print("Guess 6: " + guess6)
+                            print("You Lost")
+                            return (answer,7)
+
+playWordle('saute')
