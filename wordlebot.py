@@ -169,7 +169,7 @@ def checkGuess (guess, answer) :
 
 
 
-def playWordle(answer):
+def playWordle(firstGuess, answer):
     global unknownLetters
     global possibleWords
     global guessResults
@@ -179,7 +179,7 @@ def playWordle(answer):
     # possibleWords=wordList
     # print(guessResults) #is resetting correctly
     # print(possibleWords) #not resetting correctly
-    guess1 = nextGuess()
+    guess1 = firstGuess
     if guess1 == answer:
         # print("Wow, first guess! " + guess1)
         return(answer, 1)
@@ -249,24 +249,26 @@ allWords = ["cigar","rebut","sissy","humph","awake","blush","focal","evade","nav
 
 
 
+def testFirstWord(startWord):
+    botScoreList=[]
+    print("Testing First Word: "+startWord)
+    for word in allWords:
+        # print(word)
+        botScore = playWordle(startWord, word)
+        botScoreList.append(botScore)
 
+    # print(botScoreList)
 
+    ## find the average bot guesses
+    total=0
+    for item in botScoreList:
+        score=item[1]
+        total+=score
 
-botScoreList=[]
-for word in allWords:
-    # print(word)
-    botScore = playWordle(word)
-    botScoreList.append(botScore)
+    average=total/len(botScoreList)
 
-# print(botScoreList)
+    print("Bot Score Average:")
+    print(str(average))
+    return startWord, average
 
-## find the average bot guesses
-total=0
-for item in botScoreList:
-    score=item[1]
-    total+=score
-
-average=total/len(botScoreList)
-
-print("Bot Score Average:")
-print(str(average))
+testFirstWord('black')
